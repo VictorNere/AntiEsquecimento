@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AntiEsquecimento</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%236366f1'><path d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z'/></svg>">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    
+    <div class="bg-shape shape-1"></div>
+    <div class="bg-shape shape-2"></div>
+
+    <div class="app-wrapper">
+        
+        <section id="login-view" class="view active">
+            <div class="login-card">
+                <h1>AntiEsquecimento</h1>
+                <p>Digite seu ID para sincronizar ou crie um novo.</p>
+                <div class="input-group">
+                    <input type="text" id="user-id-input" placeholder="Seu ID Único">
+                    <button id="btn-login" class="btn-primary">Acessar</button>
+                </div>
+                <button id="btn-create-id" class="btn-link">Gerar novo ID</button>
+            </div>
+        </section>
+
+        <section id="dashboard-view" class="view hidden">
+            <header>
+                <div class="header-top">
+                    <div class="user-info">
+                        <i class="fa-solid fa-user-astronaut"></i>
+                        <span id="display-user-id">ID: ...</span>
+                        <button id="btn-logout" class="icon-btn" title="Sair"><i class="fa-solid fa-right-from-bracket"></i></button>
+                    </div>
+                    <div class="score-display">
+                        <i class="fa-solid fa-trophy"></i>
+                        <span id="user-score">0</span>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <h2>Categorias</h2>
+                    <button id="btn-view-completed" class="btn-secondary">
+                        <i class="fa-solid fa-clock-rotate-left"></i> Concluídos
+                    </button>
+                </div>
+            </header>
+
+            <div id="category-grid" class="grid-container">
+                </div>
+        </section>
+
+        <section id="detail-view" class="view hidden">
+            <header class="detail-header">
+                <button id="btn-back" class="icon-btn large"><i class="fa-solid fa-chevron-left"></i></button>
+                <h2 id="category-title">Categoria</h2>
+                <button id="btn-add-item" class="icon-btn large action"><i class="fa-solid fa-plus"></i></button>
+            </header>
+            
+            <div id="items-list" class="items-container">
+                </div>
+        </section>
+
+    </div>
+
+    <div id="item-form-modal" class="modal hidden">
+        <div class="modal-content glass-panel">
+            <div class="modal-header">
+                <h3 id="modal-title">Novo Item</h3>
+            </div>
+            
+            <div class="form-group">
+                <label>O que você não pode esquecer?</label>
+                <input type="text" id="item-name" placeholder="Ex: Pagar a luz">
+            </div>
+            
+            <div class="form-group">
+                <label>Nível de Urgência</label>
+                <div class="urgency-selector">
+                    <div class="radio-group">
+                        <input type="radio" name="urgency" id="u1" value="1" checked>
+                        <label for="u1" class="u-opt low">Baixa <span>+1</span></label>
+                    </div>
+                    <div class="radio-group">
+                        <input type="radio" name="urgency" id="u2" value="2">
+                        <label for="u2" class="u-opt med">Média <span>+2</span></label>
+                    </div>
+                    <div class="radio-group">
+                        <input type="radio" name="urgency" id="u3" value="3">
+                        <label for="u3" class="u-opt high">Alta <span>+3</span></label>
+                    </div>
+                    <div class="radio-group">
+                        <input type="radio" name="urgency" id="u4" value="4">
+                        <label for="u4" class="u-opt crit">Urgente <span>+4</span></label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <textarea id="item-obs" rows="3" placeholder="Alguma observação importante?"></textarea>
+            </div>
+            
+            <div class="modal-actions">
+                <button id="btn-cancel" class="btn-text">Cancelar</button>
+                <button id="btn-save" class="btn-primary">Salvar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="completed-modal" class="modal hidden">
+        <div class="modal-content glass-panel wide">
+            <div class="modal-header">
+                <h3>Histórico de Conquistas</h3>
+                <button id="btn-close-completed" class="icon-btn"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div id="completed-list" class="completed-container">
+                </div>
+        </div>
+    </div>
+
+    <div id="confirm-modal" class="modal hidden">
+        <div class="modal-content glass-panel confirm-box">
+            <div id="confirm-icon-container" class="confirm-icon">
+                <i id="confirm-icon-i" class="fa-solid fa-trash-can"></i>
+            </div>
+            <h3 id="confirm-title">Tem certeza?</h3>
+            <p id="confirm-text">Deseja realmente excluir?</p>
+            <div class="modal-actions centered">
+                <button id="btn-confirm-no" class="btn-secondary">Cancelar</button>
+                <button id="btn-confirm-yes" class="btn-danger">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast-container"></div>
+
+    <script type="module" src="js/app.js"></script>
+</body>
+</html>

@@ -473,3 +473,12 @@ function detectIcon(name) {
     if (lower.includes('pao') || lower.includes('pão') || lower.includes('mercado')) return 'fa-basket-shopping';
     return 'fa-circle-check'; 
 }
+
+// --- REGISTRO PWA ---
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+            .then(reg => console.log('App pronto para instalação', reg))
+            .catch(err => console.log('Erro ao registrar app', err));
+    });
+}
